@@ -10,6 +10,10 @@ public class ex2_3 {
         System.out.println((int)2.9 + 1.8); // 2.0 + 1.8 -> 3.8
         System.out.println((int)(2.9 + 1.8)); // 4.7 -> 4
         System.out.println((int)2.9 + (int)1.8); // 2 + 1 -> 3
+
+        int x = 2, y = 10, z = 0;
+        z = x++*2+--y-5+x*(y%2);
+        System.out.println(z);
         
     }
 }
