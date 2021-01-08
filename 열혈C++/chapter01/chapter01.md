@@ -309,3 +309,257 @@ return x*x;
 
 namespace란, 말 그대로 특정 영역에 이름을 붙여주기 위한 문법적 요소이다.
 
+
+
+- 이름공간
+
+
+
+이름충돌이 나지 않도록 제시한 문법.
+
+
+
+- 이름공간의 원리
+
+
+
+이름의 소속을 지칭하면 이름충돌이 나지 않는 원리 
+
+namespace라는 키워드를 사용해서 이름공간을 지칭한다.
+
+
+
+```c++
+#include <iostream>
+
+namespace BestComImpl{
+    void SimpleFunc(void){
+        std::cout << "Bestcom이 정의한 함수" << std::endl;
+    }
+}
+
+namespace ProgComImpl{
+    void SimpleFunc(void){
+        std::cout << "ProgCom이 정의한 함수" << std::endl;
+    }
+}
+
+int main(void){
+    BestComImpl::SimpleFunc();
+    ProgComImpl::SimpleFunc();
+    return 0;
+}
+```
+
+
+
+다음과 같이 :: 연산자를 가리켜 '범위지정 연산자( scope resolution operator)'라고 칭하며, 이름공간을 지정할 때 사용하는 연산자이다.
+
+
+
+- 이름공간 기반의 함수 선언과 정의의 구분
+
+
+
+함수는 선언과 정의를 분리하는 것이 일반적이다. 이름공간 기반으로 함수 선언과 정의를 구분하는 방법은 아래와 같다.
+
+```c++
+#include <iostream>
+
+namespace BestComImpl{  // 이름공간 안에서 함수의 선언만 삽입
+    void SimpleFunc(void);
+}
+
+namespace ProgComImpl{
+    void SimpleFunc(void);
+}
+
+int main(void){
+    BestComImpl::SimpleFunc();
+    ProgComImpl::SimpleFunc();
+    return 0;
+}
+
+void BestComImpl::SimpleFunc(void){  // 이름공간 안에 선언된 함수의 정의 부분
+    std::cout << "BestCom이 정의한 함수" << std::endl;
+}
+
+void ProgComImpl::SimpleFunc(void){
+    std::cout << "ProgCom이 정의한 함수" << std::endl;
+}
+```
+
+선언 부분에는 기본 함수 뼈대를 제시하고 ;로 마무리짓는다. 
+
+정의 부분에서는 해당이름공간::함수{함수의 정의}로 정의내린다.
+
+```c++
+#include <iostream>
+
+namespace BestComImpl{  // 이름공간 안에서 함수의 선언만 삽입
+    void SimpleFunc(void);
+}
+
+namespace ProgComImpl{
+    void SimpleFunc(void);
+}
+
+namespace ProgComImpl{
+    void SimpleFunc2(void);
+}
+
+int main(void){
+    BestComImpl::SimpleFunc();
+    ProgComImpl::SimpleFunc();
+    return 0;
+}
+
+void BestComImpl::SimpleFunc(void){  // 이름공간 안에 선언된 함수의 정의 부분
+    std::cout << "BestCom이 정의한 함수" << std::endl;
+    ProgComImpl::SimpleFunc2(); // 다른 이름공간
+}
+
+void ProgComImpl::SimpleFunc(void){
+    std::cout << "ProgCom이 정의한 함수" << std::endl;
+    SimpleFunc2();  // 동일 이름공간
+}
+
+void ProgComImpl::SimpleFunc2(void){
+    std::cout << "ProgCom의 func2" << std::endl;
+}
+```
+
+동일한 이름공간의 함수 정의 부분에선 이름공간::을 생략해서 함수를 호출할 수 있다.
+
+다른 이름공간의 함수를 호출할 경우엔 이름공간::을 붙여서 호출해야 한다.
+
+
+
+- 이름공간의 중첩
+
+
+
+이름공간은 다른 이름공간 안에 삽입될 수 있다.
+
+```c++
+namespace Parent{
+int num = 2;
+
+namespace SubOne{
+int num = 3;
+}
+
+namespace SubTwo{
+int num = 4;
+}
+}
+```
+
+총 3개의 num이 존재하지만 각각 선언된 이름공간이 다르기 때문에 이름충돌 문제가 발생하지 않는다.
+
+```c++
+cout << Parent::num << endl; // 2
+cout << Parent::SubOne::num << endl; // 3
+cout << Patent::SubTwo::num << endl; // 4
+```
+
+중첩된 이름공간은 순서대로 :: 연산자를 사용해 활용할 수 있다.
+
+
+
+- std::cout, std::cin, std::endl;
+
+
+
+즉, 이름공간 std에 선언된 cout, cin, endl를 의미한다.
+
+```c++
+namespace std{
+cout ...
+cin ...
+endl ...
+}
+```
+
+이런식으로 선언되어 있을 것이다. C++ 표준에서 제공하는 다양한 요소들은 이름공간 std 안에 선언되어 있다.
+
+
+
+- using을 이용한 이름공간 명시
+
+
+
+이름공간::을 매번 붙여주는 것이 번거롭기 때문에 using 이름공간 선언을 사용한다. 이는 프로그램 전체영역에 효력을 미치게 하기 위해 전역변수와 마찬가지로 함수 밖에 선언해야 한다.
+
+```c++
+using std::cin;
+using std::cout;
+using std::endl;
+```
+
+위는 cin, cout, endl을 이름공간 std에서 찾으라는 선언이다.
+
+일일이 using 선언을 하는 게 귀찮으면, 아래와 같이 이름공간 std에 선언된 모든 것에 대해 이름공간 지정의 생략을 명령할 수 있다.
+
+```c++
+using namespace std;
+```
+
+프로그래밍하기엔 위의 예가 편하지만, 이렇게 선언하면 이름충돌이 날 확률이 상대적으로 높아지므로 상황을 판단해 혼용해야 한다.
+
+
+
+- 이름공간의 별칭 지정
+
+
+
+이름공간이 많이 중첩되면, 
+
+```c++
+AAA::BBB::CCC::num = 20;
+```
+
+과 같이 불편하다. 이러한 경우엔 AAA::BBB::CCC에 별칭을 줄 수 있다.
+
+```c++
+namespace ABC=AAA::BBB::CCC;
+```
+
+위의 선언으로
+
+```c++
+ABC::num = 20;
+```
+
+와 같은 접근이 가능하다.
+
+
+
+- 범위지정 연산자(Scope Resolution Operator)의 또 다른 기능
+
+
+
+지역변수의 이름이 전역변수의 이름과 같은 경우, 전역변수는 지역변수에 의해 가려진다. 
+
+```c++
+int val = 100; // 전역변수
+
+int SimpleFunc(void){
+int val = 20; // 지역변수
+val += 3; // 지역변수 val의 값 3 증가
+}
+```
+
+SimpleFunc 내에서 전역변수와 동일한 이름의 지역변수 va에 의해 이어 등장하는 문장은 지역변수 val의 값을 증가시킨다.
+
+SimpleFunc 함수 내에서 전역변수 val에 접근하기 위해선, 범위지정 연산자를 쓰면 된다.
+
+```c++
+int val = 100; // 전역변수
+
+int SimpleFunc(void){
+int val = 20; // 지역변수
+::val += 3; // 전역변수 val의 값 3 증가
+}
+```
+
