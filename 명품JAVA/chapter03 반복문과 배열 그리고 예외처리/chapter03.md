@@ -293,3 +293,70 @@ int myArray[] = intArray; // 레퍼런스 치환, myArray는 intArray와 동일�
 레퍼런스 치환으로 두 레퍼런스가 하나의 배열 공유하는 모습.
 
 intArray 배열을 복사한 것이 아니라, 배열의 주소만 복사된다. myArray는 intArray와 동일한 레퍼런스 값을 갖게 되어 myArray는 intArray의 배열을 공유하게 되고, 배열의 원소 또한 접근 가능하다.
+
+
+
+- 배열의 크기, length 필드
+
+
+
+자바는 배열을 객체로 다룬다. 배열이 생성되면 객체가 생성된다. 이 객체에는 배열의 저장 공간과 함께 배열의 크기 값을 가진 length 필드가 존재한다.
+
+```java
+int intArray[] = new int[5];
+int size = intArray.length; // size는 5
+```
+
+배열 객체는 length 필드가 있기 때문에, 프로그램에서 배열 크기를 따로 관리하지 않아도 된다.
+
+```java
+for(int i = 0; i < intArray.length; i++){ // 배열의 크기만큼 반복하는 코드
+System.out.println(intArray[i]);
+}
+```
+
+위와 같이 유용하게 사용한다.
+
+
+
+- 배열과 for-each 문
+
+
+
+기존의 for 문을 변형하여, 배열이나 나열(enumeration)의 크기만큼 루프를 돌면서 각 원소를 순차적으로 접근하는데 유용하게 만드는 for 문을 for-each 문이라고 부르며, 구조는 다음과 같다.
+
+```java
+for(변수 : 배열레퍼런스){
+.. 반복 작업문 ...
+}
+```
+
+배열 n에 들어있는 모든 정수를 더하는 코드를 for-each 문으로 작성하면 다음과 같다.
+
+```java
+int []n = {1,2,3,4,5};
+int sum = 0;
+for(int k : n){
+sum += k;
+}
+System.out.println("합은 " + sum);
+```
+
+앞의 for-each 문은 k = n[0], n[1], n[2], n[3], n[4] 값으로 바꾸면서, 배열 n의 크기만큼 반복한다.
+
+문자열, 나열 타입(enum) 또한 for-each 문을 사용할 수 있다.
+
+```java
+String names[] = {"사과", "배", "체리"};
+for(String s : names){
+System.out.print(s + " ");
+}
+```
+
+```java
+enum Week {월, 화, 수, 목, 금, 토, 일}
+for (Week day : Week.values()){
+System.out.println(day + "요일 ");
+}
+```
+
