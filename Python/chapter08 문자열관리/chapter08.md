@@ -184,3 +184,158 @@ len(s)  # 내장 함수
 s.find('o')  # 메서드
 ```
 
+
+
+find와 rfind 메서드는 인수로 지정한 문자 혹은 부분 문자열의 위치를 조사하는 일은 똑같지만, rfind는 뒤에서 검색을 시작한다. 똑같은 문자를 찾아도 앞에서부터 찾을 때와 뒤에서부터 찾을 때의 검색 결과는 다르다. 만일 문자열 내에 찾고자 하는 문자가 하나밖에 없다면 큰 문제가 없지만 여러 개가 있을 경우 방향에 따라 찾는 위치가 다르다.
+
+ex) pyth**o**n pr**o**gramming -> find('o')는 4 리턴, rfind('o')는 9 리턴(공백도 한 공간 차지)
+
+index 메서드도 문자를 찾는다는 면에서 기능은 같지만 해당 문자가 없을 경우 예외를 발생시키므로 반드시 예외 처리 구문으로 감싸야 한다.
+
+
+
+- 조사
+
+
+
+특정 문자가 어디에 있는지는 관심이 없고 단순히 있는지 없는지만 알고 싶을 때는 in 구문을 사용한다. 함수가 아닌 키워드이기 때문에 "단어 in 문자열" 형식으로 사용한다.
+
+포함되어 있으면 True 리턴, 아니면 False 리턴한다.
+
+반대로 not in은 포함되어 있지 않은지 조사한다.
+
+```python
+단어 in 문자열 # 문자열에 단어가 포함되어 있는가
+단어 not in 문자열 # 문자열에 단어가 포함되어 있지 않는가
+```
+
+```python
+s = "python programming"
+print('a' in s)
+print('z' in s)
+print('pro' in s)
+print('x' not in s)
+```
+
+```
+출력 결과
+True
+False
+True
+True
+```
+
+startswith 메서드는 특정 문자열로 시작되는지 조사한다. 문자열 전체나 중간이 아닌 앞부분의 일부만 비교하는 점에서 find나 index와 다르다. 반대로 endswith 메서드는 특정 문자열로 끝나는지 뒷부분만 비교한다.
+
+```python
+문자열.startswith(str) # str로 시작하는 문자열인지
+문자열.endswith(str) # str로 끝나는 문자열인지
+```
+
+```python
+name = "김한결"
+if name.startswith("김"):
+    print("김씨입니다.")
+if name.startswith("한"):
+    print("한씨입니다.")
+
+file = "picture.jpg"
+if file.endswith(".jpg"):
+    print("그림 파일입니다.")
+```
+
+확장자를 조사할 때는 주로 슬라이싱 혹은 endswith 메서드를 사용한다.
+
+| 함수         | 설명                                                   |
+| ------------ | ------------------------------------------------------ |
+| isalpha      | 모든 문자가 알파벳인지 조사한다.                       |
+| islower      | 모든 문자가 소문자인지 조사한다.                       |
+| isupper      | 모든 문자가 대문자인지 조사한다.                       |
+| isspace      | 모든 문자가 공백인지 조사한다.                         |
+| isalnum      | 모든 문자가 알파벳 또는 숫자인지 조사한다.             |
+| isdecimal    | 모든 문자가 숫자인지 조사한다.                         |
+| isdigit      | 모든 문자가 숫자인지 조사한다.                         |
+| isnumeric    | 모든 문자가 숫자인지 조사한다.                         |
+| isidentifier | 명칭으로 쓸 수 있는 문자로만 구성되어 있는지 조사한다. |
+| isprintable  | 인쇄 가능한 문자로만 구성되어 있는지 조사한다.         |
+
+
+isdigit()은 거듭제곱, 숫자 특수문자까지 True라고 허용하는 듯
+
+isnumeric() 또한 분수, 숫자의 특수문자까지 True라고 허용한다.
+
+isdecimal()은 int로 변환 가능한 문자만 True라고 허용한다. 즉, 특수문자, 거듭제곱으로 표현된 문자열 수는 False를 리턴한다.
+
+즉, int로 변환 가능한 문자열을 판별하기 위해선 isdecimal()을 이용하고, 그렇지 않은 특수문자, 루트 같은 경우
+
+의 문자열 또한 숫자로 이루어진 문자열이라고 판별하고 싶으면 isnumeric(), isdecimal()을 혼용해서 쓰면 될 것 같다.
+
+
+
+- 변경 
+
+
+
+**문자열**은 **불변객체**이다. 즉, 부분 수정 불가하다. 다만 통째로 바꾸는 일은 가능하다.
+
+| 함수       | 설명                                |
+| ---------- | ----------------------------------- |
+| lower      | 영문자를 전부 소문자로 바꾼다.      |
+| upper      | 영문자를 전부 대문자로 바꾼다.      |
+| swapcase   | 대소문자를 반대로 뒤집는다.         |
+| capitalize | 문장의 첫 글자만 대문자로 바꾼다.   |
+| title      | 모든 단어의 처음을 대문자로 바꾼다. |
+| strip      | 양쪽의 공백을 모두 제거한다.        |
+| lstrip     | 왼쪽의 공백만 제거한다.             |
+| rstrip     | 오른쪽의 공백만 제거한다.           |
+
+```python
+s = "Good morning. my love KIM"
+
+print(s.lower()) # 전부 소문자로
+print(s.upper()) # 전부 대문자로
+print(s) # 메서드를 활용해서 문자열을 바꾸어도 리턴값을 원본을 바꿔서 리턴하는 것이 아니라 바뀐 새로운 값을 리턴하기 때문에 원본 문자열은 그대로이다.
+
+print(s.swapcase()) # 소문자 -> 대문자, 대문자 -> 소문자
+print(s.capitalize()) # 문장의 첫 글자만 대문자로
+print(s.title()) # 단어의 첫 글자만 대문자로 바꾼다. 단어의 첫 글자가 아니면 소문자로
+```
+
+```
+출력 화면
+good morning. my love kim
+GOOD MORNING. MY LOVE KIM
+Good morning. my love KIM
+gOOD MORNING. MY LOVE kim
+Good morning. my love kim
+Good Morning. My Love Kim
+```
+
+만일 s의 모든 문자를 아예 바꾸고 싶다면 대입문을 쓰면 된다.
+
+```python
+s = s.lower()
+```
+
+다른 문자열 변경 메서드도 문자열 자체를 건드리지 않고 변경된 새로운 문자열을 리턴한다는 점을 유의해야 한다.
+
+
+
+사용자로부터 문자열을 입력받거나 다른 문자열에서 분리해내면 앞뒤로 불필요한 공백이 들어가는 경우가 빈번하다. 의미 없는 공백을 제거하기 위해선 strip, rstrip, lstrip 메서드를 사용한다.
+
+```python
+s = "  angel  "
+print(s + "님")
+print(s.lstrip() + "님")
+print(s.rstrip() + "님")
+print(s.strip() + "님")
+```
+
+```
+출력 내용
+  angel  님
+angel  님
+  angel님
+angel님
+```
+
