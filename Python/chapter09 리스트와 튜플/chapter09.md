@@ -1,5 +1,58 @@
 #### 9.1 리스트
 
+![스크린샷(136)](https://user-images.githubusercontent.com/50413112/105130579-a6324b00-5b2a-11eb-8565-ae8bc6fbdd7a.png)
+
+- reference copy
+
+
+
+```python
+nums = list(range(10))
+nums2 = nums
+print(nums2)
+# 값이 nums2에 복사된 것 같지만
+nums[0] = 100
+print(nums)
+print(nums2)
+```
+
+```
+[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+[100, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+[100, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+```
+
+nums2의 공간을 새로 만들고 거기에 nums의 값을 복사해서 넣고 그 저장공간을 가리키는 것이 아니라 그냥 nums2에 nums의 저장공간을 복사해 넣어 똑같은 곳을 가리킨다.
+
+그래서 nums를 수정하고 nums2를 출력하면 nums와 같은 결과를 보인다.
+
+
+
+- value copy
+
+
+
+```python
+nums = list(range(10))
+nums2 = nums[:]
+print(nums)
+print(nums2)
+print("수정 후")
+nums[0] = 100
+print(nums)
+print(nums2)
+```
+
+```
+[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+수정 후
+[100, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+```
+
+nums2 = nums를 한 것이 아니라 nums[:]를 통해 nums의 값을 새로운 공간에 복사해 넣고 그 주소를 nums2가 가리킨다. 즉, 같은 곳을 가리키는 것이 아닌 각기 다른 곳을 가리키기 때문에 nums를 수정하고 nums2를 출력해도 다른 결과가 나온다.
+
 
 
 - 자료의 집합
