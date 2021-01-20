@@ -360,3 +360,241 @@ System.out.println(day + "요일 ");
 }
 ```
 
+
+
+#### 3.4 다차원 배열
+
+
+
+- 2차원 배열
+
+- 2차원 배열 선언과 생성
+
+1차원 배열과 마찬가지로 2차원 배열도 레퍼런스 변수 선언 후 배열을 생성한다.
+
+```java
+int intArray[][];
+char charArray[][];
+double doubleArray[][];
+```
+
+또는
+
+```java
+int [][] intArray;
+char [][] charArray;
+double [][] doubleArray;
+```
+
+그다음 new 연산자를 이용해 2차원 배열의 저장 공간을 생성한다.
+
+첫 번째 []에는 행의 개수를, 두 번째 []에는 열의 개수를 나타낸다.
+
+```java
+intArray = new int [2][5];
+charArray = new char [5][5];
+doubleArray = new double [5][2];
+```
+
+length를 통해 행의 개수, 열의 개수를 알 수 있다.
+
+```java
+int intArray = new int [2][5];
+int size = intArray.length; // 2 (intArray[0], intArray[1])
+int size2 = intArray[0].length; // 5 (intArray[0][0], intArray[0][1], //intArray[0][2], intArray[0][3], intArray[0][4])
+int size3 = intArray[1].length; // 5 (intArray[1][0], intArray[1][1], //intArray[1][2], intArray[1][3], intArray[1][4])
+```
+
+intArray.length -> 행의 개수, 2개
+
+intArray[0].length -> 0번째 행의 열의 개수, 5개
+
+intArray[1].length -> 1번째 행의 열의 개수, 5개
+
+
+
+2차원 배열도 레퍼런스 변수 선언과 배열 생성을 동시에 할 수 있다.
+
+```java
+int intArray[][] = new int [2][5];
+char charArray[][] = new char [5][5];
+double doubleArray[][] = new double [5][2];
+```
+
+
+
+- 2차원 배열의 초기화
+
+
+
+2차원 배열을 선언할 때 각 원소를 초기화할 수 있다. 그러면 자동으로 원소 개수만한 배열의 공간이 할당되고, 원소 값으로 초기화된다.
+
+```java
+int intArray[][] = {{0, 1, 2}, {3, 4, 5}, {6, 7, 8}}; // 3x3
+char charArray[][] = {{'a', 'b', 'c'}, {'d', 'e', 'f'}}; // 2x3
+double doubleArray[][] = {{0.01, 0.02}, {0.03, 0.04}}; // 2x2
+```
+
+
+
+- 비정방형 배열
+
+
+
+지금까지 공부한 배열은 모두 정방형 배열이다.
+
+정방형 배열은 각 행의 열 개수가 모두 동일한 배열을 말한다.
+
+비정방형 배열은 행마다 열의 개수가 서로 다른 배열을 말한다.
+
+```java
+int i[][]; // 2차원 배열의 레퍼런스 변수 i 선언
+i = new int[4][]; // 각 행을 가리키는 레퍼런스 배열 생성
+i[0] = new int[1]; // 첫째 행에 1개 크기의 배열 생성
+i[1] = new int[2]; // 둘째 행에 2개 크기의 배열 생성
+i[2] = new int[3]; // 셋째 행에 3개 크기의 배열 생성
+i[3] = new int[4]; // 넷째 행에 4개 크기의 배열 생성
+```
+
+![스크린샷(137)](https://user-images.githubusercontent.com/50413112/105169365-c5e36680-5b5e-11eb-9dde-ec3ba874b36f.png)
+
+```java
+i.length -> 2차원 배열의 행의 개수
+i[0].length -> 0번째 행의 열의 개수
+i[1].length -> 1번째 행의 열의 개수
+....
+```
+
+어떤 메소드가 배열을 매개변수로 받을 때, 배열이 정방형인지 비정방형인지는 표시되지 않기 때문에 length 필드를 사용해 각 행의 열의 개수를 파악해야 한다.
+
+배열 생성 시 초기화를 통해 비정방형 배열을 생성할 수도 있다.
+
+```java
+int intArray[][] = {{0}, {1, 2}, {3, 4, 5}, {6, 7, 8, 9}};
+```
+
+정방형 배열 역시 비정방형 배열을 만드는 방법으로 만들 수 있다.
+
+```java
+int i [][]; // 2차원 배열 레퍼런스 생성
+i = new int[2][]; // 각 행의 레퍼런스 배열 생성
+i[0] = new int[2]; // 첫째 행에 2개 정수 배열 생성
+i[1] = new int[2]; // 둘째 행에 2개 정수 배열 생성
+```
+
+
+
+#### 3.5 메소드에서 배열 리턴
+
+
+
+메소드가 배열을 리턴하는 경우를 보면, 메소드에서 어떤 배열이든지 리턴하면 배열 공간 전체가 아니라 배열의 레퍼런스만 리턴된다.
+
+```java
+int[] makeArray(){ // 리턴타입 메소드이름
+	int temp[] = new int[4];
+	return temp; // 리턴 후 temp가 가리키는 new로 항당받은 배열 메모리는 사라지지 않고, 지역 변수인 temp만 사라진다.
+}
+...
+public static void main(String args[]){
+    int [] intArray;
+    intArray = makeArray(); // makeArray() 메소드가 리턴하는 배열을 받음
+    intArray[0] = 5;
+    intArray[1] = 6;
+    intArray[2] = 7;
+    intArray[3] = 8;
+}
+```
+
+메소드는 레퍼런스만 리턴하기 때문에, 리턴타입을 선언할 때는 [] 안에 배열 크기를 지정하지 않는다.
+
+또한 리턴하는 배열의 타입이 리턴받는 레퍼런스 변수의 타입과 일치해야 한다.
+
+![스크린샷(138)](https://user-images.githubusercontent.com/50413112/105172382-e3b2ca80-5b62-11eb-95f0-bd39825e9926.png)
+
+2차원 배열을 리턴하는 메소드와 배열을 리턴받는 코드는 다음과 같다.
+
+```java
+int [][] make2DArray(){
+	return new int[3][4];
+}
+int [][] int2DArray = make2DArray();
+```
+
+생성하고, 리턴받는 타입이 동일해야 한다.
+
+
+
+#### 3.6 main() 메소드
+
+
+
+- main() 메소드의 특징
+
+
+
+main() 메소드는 자바 응용 프로그램의 실행이 시작되는 특별한 메소드로서 원형은 다음과 같다.
+
+```java
+public static void main(String[] args[]){
+...
+}
+```
+
+public(다른 클래스에서 메소드 접근 허용)
+
+-> 자바 응용 프로그램이 실행을 시작할 때 JVM에 의해 호출되어야 하므로 public 속성으로 선언되어야 한다.
+
+static(객체 생선 전부터 호출 가능)
+
+-> 자신을 포함하는 클래스의 객체가 생성되기 전에, 처음부터 JVM이 호출하므로 static 속성으로 선언되어야 한다.
+
+void(리턴 값 없음)
+
+-> 아무 값도 리턴하지 않기 때문에 void 타입니다. main() 메소드를 끝내기 위해 리턴하려면 return; 문을 사용하면 된다.
+
+String[](문자열 배열)
+
+-> 자바는 명령행에 입력된 인자들을 문자열 배열로 만들어 main() 메소드에 전달한다.
+
+args(매개변수)
+
+
+
+- main() 메소드의 매개변수
+
+
+
+자바에서 main()메소드에서 매개변수의 값은
+
+```java
+$ java Hello option1 option2 option3 .... optionN
+```
+
+다음과 같이 실행된다. Hello 클래스를 실행하는 예이다.
+
+option1 option2 option3 .... optionN을 명령행 인자라고 부르며, 이들은 모두 Hello 클래스의 main() 메소드의 매개변수로 전달된다.
+
+Hello 클래스의 main() 메소드가 시작되기 전, 이 인자들은 각각 문자열로 만들어지고 String 배열에 저장된다.
+
+``` java
+String a = args[0]; // option1
+String b = args[1]; // option2
+...
+```
+
+args 레퍼런스를 이용해 명령행 인자를 전달받는다.
+
+
+
+- main()에 명령행 인자를 전달하고 활용하는 예
+
+
+
+```
+$ javac Hello.java
+$ java Hello option1 option2
+```
+
+args 배열은 문자열 배열이기 때문에 숫자로 계산을 하고 싶다면 숫자로 변형하는 함수를 사용해야 한다.
+
