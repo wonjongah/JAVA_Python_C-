@@ -14,7 +14,7 @@ int main(void){
 string menu(string yoil){
     if(!strcmp("월요일", yoil)){
         // strcmp는 두 문자열이 같으면 0을 리턴한다.
-        // if 문을 만족시키기 위해서 반전(!)시켜 두 문자열을 비교한다.
+        // if 문을 만족시키기 위해서 반전(! 논리 부정 연산자 사용)시켜 두 문자열을 비교한다.
         return "청국장";
     }else if(!strcmp("화요일", yoil)){
         return "비빔밥";
