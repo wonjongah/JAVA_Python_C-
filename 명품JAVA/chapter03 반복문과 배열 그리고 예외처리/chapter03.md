@@ -598,3 +598,265 @@ $ java Hello option1 option2
 
 args 배열은 문자열 배열이기 때문에 숫자로 계산을 하고 싶다면 숫자로 변형하는 함수를 사용해야 한다.
 
+
+
+#### 3. 7 자바의 예외처리
+
+
+
+- 예외(Exception)이란?
+
+
+
+자바에서 오동작이나 결과에 악영향을 끼칠 수 있는 실행 중 발생한 오류를 예외(exception)이라고 한다.
+
+문법에 맞지 않게 작성된 코드는 사전에 컴파일러에 의해 컴파일 오류(compile time error)로 걸러지지만, 예외는 사용자의 잘못에 의해 인덱스의 배열의 크기가 넘어가는 등, 예기치 못한 상황에 의해 프로그램 실행 중 발생한다.
+
+오류 => 예측 불가능.
+
+예외 => 예측 가능, 제어 가능.
+
+실행 중 예외를 예를 들면,
+
+1. 정수를 0으로 나눌 경우
+2. 배열의 크기보다 큰 인덱스로 배열의 원소에 접근하는 경우
+3. 존재하지 않는 파일을 읽으려고 하는 경우
+4. 정수 입력을 기다리는 코드가 실행되고 있을 때, 사용자가 문자를 입력한 경우
+
+실행 중에 예외가 발생하면 자바 플랫폼이 먼저 알게 되고, 응용프로그램에게 예외를 전달한다.
+
+만일 응용프로그램이 예외 대처 코드가 없다면 자바 플랫폼은 응용프로그램을 종료시킨다.
+
+
+
+- 예외 발생 사례
+
+
+
+```java
+import java.util.Scanner;
+
+public class ex3_14 {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int divided; // 나뉨수
+        int divisor; // 나눗수
+
+        System.out.print("나뉨수를 입력하시오:");
+        divided = sc.nextInt();
+        System.out.print("나눗수를 입력하시오:");
+        divisor = sc.nextInt();
+        System.out.println(divided+"를"+divisor+"로 나누면 몫은 "
+        + divided/divisor +"입니다.");
+        sc.close();
+    }
+}
+```
+
+```
+나뉨수를 입력하시오:100
+나눗수를 입력하시오:0
+Exception in thread "main" java.lang.ArithmeticException: / by zero
+        at ex3_14.main(ex3_14.java:13)
+```
+
+JVM은 정수를 0으로 나눌 수 없기 때문에 ArithmeticException 예외를 발생시킨다.
+
+사용자가 0을 입력하는 예외 상황은 컴파일 시 미리 걸러낼 수는 없으나, 예외가 발생하면 응용프로그램이 이를 적절히 대응해(handling) 강제 종료되지 않고 다시 입력을 받는 등의 조치를 취할 수 있다.
+
+
+
+- 예외 처리, try-catch-finally 문
+
+
+
+예외 처리란, 개발자가 작성한 프로그램 실행 중 예외가 발생하면 이를 대응하는 것을 말한다.
+
+자바는 예외 처리에서 try-catch-finally 문을 사용한다.
+
+```java
+try{
+	예외가 발생할 가능성이 있는 실행문(try 블록) 
+}catch(처리할 예외 타입 선언){
+	예외 처리문(catch 블록)
+}finally{
+	예외 발생 여부와 상관없이 무조건 실행되는 문장(finally 블록)
+	생략 가능
+}
+```
+
+예외가 발생할 가능성이 있는 실행문을 try{} 블록으로 묶고, 예외 처리 코드는 catch{} 블록 내에 작성한다. catch{} 블록은 예외마다 하나씩 작성되어야 한다.
+
+만일 try{}에서 예외가 발생하지 않으면 바로 finally로 이동하고, 생략되면 상관없이 다음 코드로 넘어간다.
+
+try{}에서 예외가 발생하면 catch{}에서 예외처리문을 거치고 finally{}로 간다. finally{}가 생략되면 다음 코드로 넘어간다.
+
+finally{} 블록은 예외가 발생하든 않든 마지막에 반드시 실행된다.
+
+
+
+- 자바의 예외 클래스
+
+
+
+| 예외 타입(예외 클래스)         | 예외 발생 경우                                               | 패키지    |
+| ------------------------------ | ------------------------------------------------------------ | --------- |
+| ArithmeticException            | 정수를 0으로 나눌 때 발생                                    | java.lang |
+| NullPointerException           | null 레퍼런스를 참조할 때 발생                               | java.lang |
+| ClassCastException             | 변환할 수 없는 타입으로 객체를 변환할 때 발생                | java.lang |
+| OutOfMemoryError               | 메모리가 부족한 경우 발생                                    | java.lang |
+| ArrayIndexOutOfBoundsException | 배열의 범위를 벗어난 접근 시 발생                            | java.lang |
+| IlligalArgumentException       | 잘못된 인자 전달 시 발생                                     | java.lang |
+| IOException                    | 입출력 동작 실패 또는 인터럽트 시 발생                       | java.io   |
+| NumberFormatException          | 문자열이 나타내는 숫자와 일치하지 않는 타입의 숫자로 변환 시 발생 | java.lang |
+| InputMismatchException         | Scanner 클래스의 nextInt()를 호출하며 정수를 받고자 했지만, 사용자가 문자를 입력한 경우 | java.util |
+
+다수의 예외를 처리하고자 하는 경우엔 여러 개의 catch 블록을 연속적으로 작성할 수 있으며, 발생한 예외와 타입이 맞는 catch 블록이 실행된다.
+
+특정 타입을 지정하지 않고 모든 예외를 모아 잡고 싶다면 Exception으로 칭하면 된다.
+
+```java
+catch(Exception e){}
+```
+
+만일 발생한 타입과 일치하는 catch 블록이 없다면 프로그램은 강제종료된다.
+
+catch 블록 내에 System.exit(0)을 호출하면 언제든지 프로그램을 종료할 수 있다.
+
+```java
+import java.util.Scanner;
+
+public class ex3_15 {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int divided; // 나뉨수
+        int divisor; // 나눗수
+
+        while(true){
+            System.out.print("나뉨수를 입력하시오:");
+            divided = sc.nextInt();
+            System.out.print("나눗수를 입력하시오:");
+            divisor = sc.nextInt();
+
+            try{
+                System.out.println(divided+"를"+divisor+"로 나누면 몫은 "
+                + divided/divisor +"입니다.");
+                break; // 정상적인 나누기 완료 후 while 벗어나기
+            }catch(ArithmeticException e){
+                System.out.println("0으로 나눌 수 없습니다! 다시 입력하세요.");
+            }
+        }
+        sc.close();
+    }
+}
+```
+
+```
+나뉨수를 입력하시오:100
+나눗수를 입력하시오:0
+0으로 나눌 수 없습니다! 다시 입력하세요.
+나뉨수를 입력하시오:100
+나눗수를 입력하시오:3
+100를3로 나누면 몫은 33입니다.
+```
+
+
+
+```java
+public class ex3_16 {
+    public static void main(String[] args) {
+        int[] intArray = new int[5];
+        intArray[0] = 0;
+        try{
+            for(int i = 0; i < intArray.length; i++){
+                intArray[i+1] = i + 1 + intArray[i]; // i = 4인 경우 예외 발생
+                System.out.println("intArray[" + i + "]" + "=" + intArray[i]);
+            }
+        }catch(IndexOutOfBoundsException e){
+            System.out.println("배열의 인덱스가 범위를 벗어났습니다.");
+        }
+    }
+}
+```
+
+```
+intArray[0]=0
+intArray[1]=1
+intArray[2]=3
+intArray[3]=6
+배열의 인덱스가 범위를 벗어났습니다.
+```
+
+
+
+```java
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
+public class ex3_17 {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("정수를 3개 입력하세요");
+        int sum = 0, n = 0;
+        for(int i = 0; i < 3; i++){
+            System.out.print(i + ">>");
+            try {
+                n = sc.nextInt(); // 사용자가 정수 이외 입력시 예외
+            } catch (InputMismatchException e) {
+                System.out.println("정수가 아닙니다. 다시 입력하세요");
+                sc.nextLine(); // 현재 입력 스트림에 남아있는 토큰을 지운다.
+                i--; // 인덱스도 -1
+                continue;
+            }
+            sum += n;
+        }
+        System.out.println("합은 " + sum);
+        sc.close();
+    }
+}
+```
+
+```
+정수를 3개 입력하세요
+0>>1
+1>>g
+정수가 아닙니다. 다시 입력하세요
+1>>g
+정수가 아닙니다. 다시 입력하세요
+1>>g
+정수가 아닙니다. 다시 입력하세요
+1>>g
+정수가 아닙니다. 다시 입력하세요
+1>>g
+정수가 아닙니다. 다시 입력하세요
+1>>3
+2>>5
+합은 9
+```
+
+
+
+```java
+public class ex3_18 {
+    public static void main(String[] args) {
+        String[] stringNumber = {"23", "27", "3.14", "74"};
+
+        int i = 0;
+        try{
+            for(i=0; i < stringNumber.length;i++){
+                int j = Integer.parseInt(stringNumber[i]);
+                System.out.println("정수로 변환된 값은 " + j); // 3.14에서 예외
+            }
+        }catch(NumberFormatException e){
+            System.out.println(stringNumber[i] + "는 정수로 변환할 수 없습니다.");
+        }
+    }
+}
+```
+
+```
+정수로 변환된 값은 23
+정수로 변환된 값은 27
+3.14는 정수로 변환할 수 없습니다.
+```
+
