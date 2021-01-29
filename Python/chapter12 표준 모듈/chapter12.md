@@ -168,3 +168,181 @@ print(math.factorial(5))
 120
 ```
 
+
+
+- 통계
+
+statistics 모듈은 3.4 버전에서 새로 추가됐다.
+
+편균, 분산 등의 통계 값을 계산한다.
+
+수학 함수로도 구할 수 있지만, 통계 함수는 정확한 값을 효율적으로 계산해낸다.
+
+| 함수           | 설명                                             |
+| -------------- | ------------------------------------------------ |
+| mean           | 평균을 구한다.                                   |
+| harmonic_mean  | 조화평균을 구한다.                               |
+| median         | 중앙값을 구한다. 짝수인 경우 보간 값을 계산한다. |
+| median_low     | 중앙값을 구한다. 집합 내의 낮은 값을 선택한다.   |
+| median_high    | 중앙값을 구한다. 집합 내의 높은 값을 선택한다.   |
+| median_grouped | 그룹 연속 중앙값을 구한다.                       |
+| mode           | 최빈값을 구한다.                                 |
+| pstdev         | 모표준편차를 구한다.                             |
+| stdev          | 표준편차를 구한다.                               |
+| variance       | 분산을 구한다.                                   |
+
+ex)
+
+```python
+import statistics
+
+score = [30, 40, 60, 70, 80, 90]
+print(statistics.mean(score))
+print(statistics.harmonic_mean(score))
+print(statistics.median(score))
+print(statistics.median_low(score))
+print(statistics.median_high(score))
+```
+
+```
+61.666666666666664
+53.14586994727592
+65.0
+60
+70
+```
+
+
+
+#### 12.2 시간
+
+
+
+- 시간 조사
+
+
+
+time 모듈은 날짜와 시간 관련 기능을 제공한다. 대표적인 함수는 현재 시간을 조사하는 time이다.
+
+유닉스는 1970년 1월 1일 자정을 기준으로 경과한 시간을 초 단위로 표현하는데 이를 에폭(Epoch) 시간 또는 유닉스 시간이라고 부른다.
+
+```python
+import time
+
+time.time() # 에폭 시간 리턴
+```
+
+```
+1611910759.21229
+```
+
+위의 숫자는 1970년부터 2018년까지 16억 초가 지났다는 말이다.
+
+시간을 딱 하나의 수치값으로 1차원화해 간단히 표현할 수 있어 계산이나 저장이 간편하고 다른 시스템과의 통신에도 유리하다.
+
+```python
+import time
+
+time.ctime() # 에폭 시간을 문자열 형태로 변환해서 리턴
+```
+
+하지만 현재 날짜와 시간을 바로 알아보기는 어렵다.
+
+ctime은 문자열 형태로 변환해 사람이 읽을 수 있도록 도와준다.
+
+인수로 에폭 시간을 넘기면 문자열로 바꿔준다.
+
+ex)
+
+```python
+import time
+
+t = time.time()
+print(time.ctime(t))
+```
+
+```
+Fri Jan 29 18:02:04 2021
+```
+
+문자열로 시간을 확인할 수 있지만 시간 요소의 순서와 영문 표기가 보기에 직관적이지 못하다.
+
+시간 요소를 분리하는 함수는 localtime 과 gmtime이 있다.
+
+gmtime은 세계 표준 시간인 UTC 시간을 구하므로, 현지 시간을 표현하는 localtime 함수를 주로 쓴다.
+
+```python
+import time
+
+time.localtime()
+time.gmtime()
+```
+
+ex)
+
+```python
+import time
+
+t = time.time()
+print(time.localtime(t))
+```
+
+```
+time.struct_time(tm_year=2021, tm_mon=1, tm_mday=29, tm_hour=18, tm_min=11, tm_sec=40, tm_wday=4, tm_yday=29, tm_isdst=0)
+```
+
+에폭 시간을 인수로 주면 localtime은 struct_time 객체를 리턴한다.
+
+이 객체를 이용해 원하는 형태의 시간으로 출력 가능하다.
+
+```python
+import time
+
+now = time.localtime()
+print(f"{now.tm_year}년 {now.tm_mon}월 {now.tm_mday}일")
+print(f"{now.tm_hour}:{now.tm_min}:{now.tm_sec}")
+```
+
+```
+2021년 1월 29일
+18:16:29
+```
+
+
+
+time 모듈 대신 datetime 모듈의 now 함수(또는 today 함수)를 사용해도 현재 지역 시간을 구할 수 있다.
+
+같은 시간을 구하지만 멤버 이름이 더 짧고 직관적이라 사용하기 쉽다.
+
+```python
+import datetime
+
+datetime.datetime.now()
+datetime.datetime.today()
+```
+
+ex)
+
+```python
+import datetime
+
+now = datetime.datetime.now() # 모듈명.객체명.메서드
+print(f"{now.year}년 {now.month}월 {now.day}일")
+print(f"{now.hour}:{now.minute}:{now.second}")
+```
+
+```
+2021년 1월 29일
+18:19:36
+```
+
+
+
+mktime 함수는 반대로 struct_time 객체를 에폭 시간으로 바꾼다.
+
+
+
+- 실행 시간 측정
+
+
+
