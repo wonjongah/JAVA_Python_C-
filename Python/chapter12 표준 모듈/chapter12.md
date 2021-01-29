@@ -346,3 +346,205 @@ mktime 함수는 반대로 struct_time 객체를 에폭 시간으로 바꾼다.
 
 
 
+time 함수가 구하는 시간은 컴퓨터에 내장된 시계를 기준으로 한다.
+
+time을 이용해 두 지점 간의 경과 시간을 측정할 수 있다.
+
+밑의 예제는 0에서 999까지 출력하는 데 걸린 시간을 측정한다.
+
+```python
+import time
+
+start = time.time()
+for a in range(1000):
+    print(a)
+end = time.time()
+print(end - start)
+```
+
+```
+1
+2
+...
+999
+1.166801929473877
+```
+
+소프트웨어 성능 테스트, 알고리즘 성능 테스트에 쓸 수 있다.
+
+sw 성능을 높이기 위해서는 입출력을 최소화시켜야 한다. 데이터를 모아서 입출력을 한 번에 해버리도록 한다.
+
+sleep 함수는 CPU를 지정한 시간만큼 잠재워 아무것도 하지 않고 시간을 끈다.
+
+인수로 초 값을 주며, 실수로 소수점 이하의 정밀한 값으로 초 단위보다 더 짧은 시간을 지정할 수도 있다.
+
+```python
+import time
+
+time.sleep()
+```
+
+ex)
+
+```python
+import time
+
+print("안녕하세요")
+time.sleep(1)
+print("밤에 성시경이 두 명 있으면 뭘까요?")
+time.sleep(5)
+print("야간투시경입니다.")
+```
+
+```
+안녕하세요
+# 1초 대기
+밤에 성시경이 두 명 있으면 뭘까요?
+# 5초 대기
+야간투시경입니다.
+```
+
+
+
+- 달력
+
+
+
+calendar 모듈은 유닉스의 cal 명령과 유사한 달력 기능을 제공한다.
+
+calendar 함수는 인수로 받은 년도의 달력 객체를 리턴하고 month 함수는 년도와 달을 인구로 받아 해당 월의 달력 객체를 리턴한다.
+
+ex)
+
+```python
+import calendar
+
+print(calendar.calendar(2018))
+print(calendar.month(2021, 1))
+# calendar.prcal(2018)
+# calendar.prmonth(2021, 1)
+```
+
+```
+                                  2018
+
+      January                   February                   March
+Mo Tu We Th Fr Sa Su      Mo Tu We Th Fr Sa Su      Mo Tu We Th Fr Sa Su
+ 1  2  3  4  5  6  7                1  2  3  4                1  2  3  4
+ 8  9 10 11 12 13 14       5  6  7  8  9 10 11       5  6  7  8  9 10 11
+15 16 17 18 19 20 21      12 13 14 15 16 17 18      12 13 14 15 16 17 18
+22 23 24 25 26 27 28      19 20 21 22 23 24 25      19 20 21 22 23 24 25
+29 30 31                  26 27 28                  26 27 28 29 30 31
+
+       April                      May                       June
+Mo Tu We Th Fr Sa Su      Mo Tu We Th Fr Sa Su      Mo Tu We Th Fr Sa Su
+                   1          1  2  3  4  5  6                   1  2  3
+ 2  3  4  5  6  7  8       7  8  9 10 11 12 13       4  5  6  7  8  9 10
+ 9 10 11 12 13 14 15      14 15 16 17 18 19 20      11 12 13 14 15 16 17
+16 17 18 19 20 21 22      21 22 23 24 25 26 27      18 19 20 21 22 23 24
+23 24 25 26 27 28 29      28 29 30 31               25 26 27 28 29 30
+30
+
+        July                     August                  September
+Mo Tu We Th Fr Sa Su      Mo Tu We Th Fr Sa Su      Mo Tu We Th Fr Sa Su
+                   1             1  2  3  4  5                      1  2
+ 2  3  4  5  6  7  8       6  7  8  9 10 11 12       3  4  5  6  7  8  9
+ 9 10 11 12 13 14 15      13 14 15 16 17 18 19      10 11 12 13 14 15 16
+16 17 18 19 20 21 22      20 21 22 23 24 25 26      17 18 19 20 21 22 23
+23 24 25 26 27 28 29      27 28 29 30 31            24 25 26 27 28 29 30
+30 31
+
+      October                   November                  December
+Mo Tu We Th Fr Sa Su      Mo Tu We Th Fr Sa Su      Mo Tu We Th Fr Sa Su
+ 1  2  3  4  5  6  7                1  2  3  4                      1  2
+ 8  9 10 11 12 13 14       5  6  7  8  9 10 11       3  4  5  6  7  8  9
+15 16 17 18 19 20 21      12 13 14 15 16 17 18      10 11 12 13 14 15 16
+22 23 24 25 26 27 28      19 20 21 22 23 24 25      17 18 19 20 21 22 23
+29 30 31                  26 27 28 29 30            24 25 26 27 28 29 30
+                                                    31
+
+    January 2021
+Mo Tu We Th Fr Sa Su
+             1  2  3
+ 4  5  6  7  8  9 10
+11 12 13 14 15 16 17
+18 19 20 21 22 23 24
+25 26 27 28 29 30 31
+```
+
+calendar, month 함수는 달력을 직접 출력하지 않고 객체만 리턴하기 때문에 print 함수로 객체를 전달해야 볼 수 있다.
+
+prcal, prmonth 함수는 달력을 직접 출력하기 때문에 print를 쓰지 않아도 된다.
+
+달력의 첫 요일을 바꾸고 싶다면 setfirstweekday를 사용하면 된다.
+
+인수로 월(0), 화(1), ...., 토(5), 일(6)의 숫자를 주면 된다.
+
+ex)
+
+```python
+import calendar
+
+calendar.setfirstweekday(6)
+print(calendar.month(2021, 1))
+```
+
+```
+    January 2021
+Su Mo Tu We Th Fr Sa
+                1  2
+ 3  4  5  6  7  8  9
+10 11 12 13 14 15 16
+17 18 19 20 21 22 23
+24 25 26 27 28 29 30
+31
+```
+
+weekday 함수는 특정 날짜가 무슨 요일인지 조사한다.
+
+```python
+import calendar
+
+calendar.weekday(2021, 1, 29) # 대신 요일을 숫자로 리턴
+```
+
+ex)
+
+```python
+import calendar
+
+yoil = ["월", "화", "수", "목", "금", "토", "일"]
+day = calendar.weekday(2021,1,29)
+print(f"2021년 1월 29일은 {yoil[day]}요일입니다.")
+```
+
+```
+2021년 1월 29일은 금요일입니다.
+```
+
+이외에도 달력을 2차 배열로 구해주는 monthcalendar 함수, 달의 첫 요일과 날수를 구해주는 monthrange 함수, 윤년 여부를 조사해주는 isleap 함수가 있다.
+
+```python
+import calendar
+
+calendar.monthcalendar()
+calendar.monthrange()
+calendar.isleap()
+```
+
+ex)
+
+```python
+import calendar
+
+print(calendar.monthcalendar(2021, 1)) # 2021년 1월 달력을 2차 배열로 리턴
+print(calendar.monthrange(2021, 1)) # 2021년 1월의 첫 요일과 날짜 수 리턴
+print(calendar.isleap(2021)) # 2021년이 윤년 여부 조사한 후 부울 리턴
+```
+
+```
+[[0, 0, 0, 0, 1, 2, 3], [4, 5, 6, 7, 8, 9, 10], [11, 12, 13, 14, 15, 16, 17], [18, 19, 20, 21, 22, 23, 24], [25, 26, 27, 28, 29, 30, 31]]
+(4, 31)
+False
+```
+
