@@ -744,3 +744,85 @@ print(s)
 ['해']
 ```
 
+
+
+#### 12.4 sys 모듈
+
+
+
+- 시스템 정보
+
+
+
+sys 모듈은 파이썬 해석기가 실행되는 환경과 해석기의 여러가지 기능을 조회하고 관리하는 모듈이다.
+
+```python
+import sys
+
+sys.version
+sys.platform
+sys.getwindowsversion()
+sys.byteorder # 네트워크 통신에 필요
+sys.path
+sys.exit() # 프로그램 강제 종료, 0이면 정상 종료, 디폴트갑 0.
+```
+
+ex)
+
+```python
+import sys
+
+print("버전 :", sys.version)
+print("플랫폼 :", sys.platform)
+if(sys.platform == "win32"):
+    print(sys.getwindowsversion())
+print("바이트 순서 :", sys.byteorder)
+print("모듈 경로 :", sys.path)
+sys.exit(0)
+```
+
+```
+버전 : 3.8.5 (default, Aug  5 2020, 09:44:06) [MSC v.1916 64 bit (AMD64)]
+플랫폼 : win32
+sys.getwindowsversion(major=10, minor=0, build=19041, platform=2, service_pack='')
+바이트 순서 : little
+모듈 경로 : ['c:\\workspace\\JAVA_Python_C++\\Python\\chapter12 표준 모듈', 'c:\\python_lib', 'c:\\workspace\\tf\\models\\research', 'c:\\workspace\\tf\\models\\research\\slim', 'C:\\ProgramData\\Anaconda3\\envs\\wonpython\\python38.zip', 'C:\\ProgramData\\Anaconda3\\envs\\wonpython\\DLLs', 'C:\\ProgramData\\Anaconda3\\envs\\wonpython\\lib', 'C:\\ProgramData\\Anaconda3\\envs\\wonpython', 'C:\\ProgramData\\Anaconda3\\envs\\wonpython\\lib\\site-packages']
+```
+
+
+
+- 명령행 인수
+
+
+
+파이썬 프로그램은 명령행에서 직접 실행할 수 있는 실행파일이다.
+
+실행 파일 뒤에 인수를 전달할 수 있다.
+
+ex)
+
+```python
+$ copy a.txt b.txt
+```
+
+명령행 인수의 값을 읽기 위해선 sys.argv를 쓴다. 명령행의 인수가 문자열 리스트로 전달된다.
+
+ex) sysargv.py
+
+```python
+import sys
+
+print(sys.argv)
+```
+
+```python
+$ python sysargv.py hi jongah
+```
+
+```
+['sysargv.py', 'hi', 'jongah']
+```
+
+argv[0]에 실행파일의 전체 경로가 들어가고 이후의 인수는 argv[1], argv[2]로 전달된다.
+
+argv의 인수 개수는 len(sys.argv)로 구하면 된다.
