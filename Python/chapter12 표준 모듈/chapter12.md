@@ -548,3 +548,11 @@ print(calendar.isleap(2021)) # 2021년이 윤년 여부 조사한 후 부울 리
 False
 ```
 
+
+
+#### 12.3 난수
+
+
+
+- random
+
