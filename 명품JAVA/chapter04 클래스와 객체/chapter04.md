@@ -99,3 +99,114 @@
 절차 지향 프로그래밍은 목적을 달성하기 위한 일의 흐름에 중점을 둔다.
 
 객체 지향 프로그래밍은 실제 세상에 가깝게 모델링해 실제 세상의 물체를 객체로 표현하고, 객체들의 관계, 상호 작용을 설계한 뒤, 각 객체를 클래스로 작성하면 프로그램이 완성된다.
+
+
+
+#### 4.2 자바 클래스 만들기
+
+
+
+- 클래스와 객체
+
+
+
+클래스는 객체를 만들어내기 위한 설계도 혹은 틀이며, 클래스 모양 그대로 생성된 실체가 객체이다.
+
+이러한 연유로 객체를 클래스의 인스턴스(instance)라고도 부른다.
+
+클래스는 하나이지만 객체들은 수 없이 많이 생성될 수 있다. 객체들은 클래스의 모양대로 모두 동일한 속성을 가지고 탄생하지만, 자신만의 고유한 값을 가짐으로써 구분된다. 객체들마다 속성의 값은 서로 다르다.
+
+
+
+- 클래스 구성
+
+
+
+자바 클래스는 class 키워드를 사용해 선언한다.
+
+클래스의 구성 요소를 멤버라고 부르며, 멤버는 필드(멤버 변수)와 메소드(멤버 함수) 두 가지이다.
+
+```java
+public class Circle{
+public int radius; // 원의 반지름 필드
+public String name; // 원의 이름 필드
+// 위의 두 줄이 필드(변수)
+    
+public Circle(){ // 원의 생성자 메소드
+}
+public double getArea(){ // 원의 면적 계산 메소드
+return 3.14 * radius * radius;
+}
+// 위의 네 줄이 메소드
+}
+```
+
+
+
+1. 클래스 선언, class Circle
+
+이 코드는 이름이 Circle인 클래스를 선어한다. class 키워드와 클래스 이름으로 선언하고 중괄호{} 안에 필드와 메소드를 모두 작성한다. 클래스 외부에는 캡슐화의 원칙으로 어떤 필드나 메소드를 둘 수 없다.
+
+2. 필드와 메소드
+
+객체 내에 값을 저장할 멤버 변수를 필드라고 부른다. Circle 클래스에는 radius와 name 두 필드가 있다.
+
+메소드는 함수이며 객체의 행동을 구현한다. 
+
+3. 접근 지정자, public
+
+Circle이나 필드, 메소드에 붙은 public을 접근 지정자라고 한다. public은 다른 클래스에서 활용하거나 접근할 수 있음을 선언한다.
+
+4. 생성자(constructor)
+
+<u>클래스의 이름과 동일한 메소드를 특별히 생성자(constructor)라고 한다.</u>
+
+<u>생성자는 객체가 생성될 때 자동으로 호출되는 특별한 메소드이다.</u>
+
+ 
+
+- new 연산자와 객체 생성, 그리고 레퍼런스 변수
+
+
+
+```java
+public class Circle{
+public int radius; // 원의 반지름 필드
+public String name; // 원의 이름 필드
+// 위의 두 줄이 필드(변수)
+    
+public Circle(){ // 원의 생성자 메소드
+}
+public double getArea(){ // 원의 면적 계산 메소드
+return 3.14 * radius * radius;
+}
+// 위의 네 줄이 메소드
+}
+
+public static void main(String args[]){
+Circle pizza; // Circle 객체에 대한 레퍼런스 변수 pizza 선언, 변수만 생성, 아직 가리키지 않음
+pizza = new Circle(); // 객체 메모리 할당 및 Circle 객체 생성, 레퍼런스 변수 가리키도록.
+
+pizza.radius = 10; // radius 필드에 10 저장
+pizza.name = "자바피자"; // name 필드에 "자바피자" 저장
+double area = pizza.getArea(); // pizza 객체의 면적 알아내기
+}
+```
+
+
+
+1. Circle pizza; 
+
+Circle 객체의 레퍼런스 변수 생성, 변수만 생성된 것이지 아직 객체를 가리키지 않는다.
+
+2. pizza = new Circle(); 
+
+객체 메모리 할당(객체에게 한 방을 주었다고 생각) + 레퍼런스 변수 pizza가 이 객체 가리키도록 지정.
+
+3. pizza.radius = 10; pizza.name = "자바피자";
+
+radius와 name 값 변경
+
+4. double area = pizza.getArea();
+
+getArea() 메소드 실행해 pizza 객체의 면적 알아내기
