@@ -556,3 +556,191 @@ False
 
 - random
 
+
+
+random은 어떤 수가 나올지 예측할 수 없는 0에서 1미만의 실수 난수를 균등한 확률로 생성해 반환한다.
+
+```python
+import random
+
+random.random() # random 함수는 0에서 1미만의 실수 하나를 생성한다. (0, 1]
+```
+
+ex)
+
+```python
+import random
+
+for i in range(5):
+    print(random.random())
+```
+
+```
+0.9437792155603566
+0.8437271725026501
+0.4314232287867853
+0.5452470820991135
+0.4448491958176032
+```
+
+매번 호출할 때마다 무작위 수를 만들어 내므로 결과는 실행할 때마다 달라지며 다섯 개의 숫자에 일정한 규칙이 없다.
+
+정수 난수를 사용하기 위해선 randint 함수를 사용한다.
+
+```python
+import random
+
+random.randint(begin, end) # randint 함수는 begin에서 end 이하의 정수 난수를 하나 생성한다. (begin, end)
+random.randrange([begin,] end[, step]) # randrange 함수는 begin에서 end 미만의 정수 난수를 하나 생성한다. (begin, end], step은 증가값을 지정할 수 있다.
+# ex, 짝수 중에서 추출하고 싶다면 step에 2를 넣으면 된다
+```
+
+ex)
+
+```python
+import random
+
+for i in range(5):
+    print(random.randint(1, 10)) # 1~10까지 정수 난수
+   
+print()
+
+for i in range(5):
+    print(random.randrange(1, 10)) # 1~9까지 정수 난수
+```
+
+```
+7
+6
+3
+10
+2
+
+8
+6
+6
+9
+5
+```
+
+
+
+범위 내의 실수 난수를 생성할 때는 uniform 함수를 사용한다.
+
+```python
+import random
+
+ramdom.uniform(begin, end) # uniform 함수는 begin에서 end까지의 실수 난수를 생성한다.
+# (begin, end)
+```
+
+uniform은 begin + (end - begin) * random()의 수식과 같다.
+
+ex)
+
+```python
+import random
+
+for i in range(5):
+    print(random.uniform(1, 100)) # 1~100 사이의 실수 난수 생성한다. (1,100]
+```
+
+```
+93.80983703665369
+98.03389202067036
+27.961503110509867
+49.2422618681396
+7.5621563993808945
+```
+
+
+
+choice 함수는 시퀀스에서 임의의 요소를 하나 골라 리턴한다.
+
+시퀀스에 저장되어 있는 여러 개의 후보 중 하나를 고를 때 편리하다.
+
+```python
+import random
+
+random.choice(literable)
+```
+
+ex)
+
+```python
+import random
+
+s = "사랑해"
+food = ["짜장면", "짬뽕", "군만두"]
+print(random.choice(s))
+print()
+print(random.choice(food))
+```
+
+```
+랑
+
+짜장면
+```
+
+choice 함수는 다음과 과 같이 구현되어 있다.
+
+```python
+i = random.randrange(len(food))
+return food[i]
+```
+
+
+
+shuffle 함수는 시퀀스의 요소를 무작위로 섞는다.
+
+```python
+import random
+
+random.shuffle() # 원본을 섞는다. call by reference. 문자열은 오류가 난다.
+```
+
+ex)
+
+```
+import random
+
+food = ["짬뽕", "짜장", "군만두", "탕수육"]
+print(food)
+random.shuffle(food)
+print(food)
+```
+
+```
+['짬뽕', '짜장', '군만두', '탕수육']
+['군만두', '짜장', '탕수육', '짬뽕']
+```
+
+
+
+sample 함수는 시퀀스의 항복 중 n개를 무작위로 뽑아 새로운 리스트를 만든다.
+
+``` python
+import random
+
+random.sample(sequence, n) # 시퀀스에서 n개를 무작위로 뽑아 새로운 리스트 만든 후 리턴
+# 문자열 가능
+```
+
+ex)
+
+```python
+import random
+
+nums = random.sample(range(1, 46), 6) # 복권 번호 추출
+nums.sort()
+print(nums)
+s = random.sample("사랑해", 1)
+print(s)
+```
+
+```
+[14, 27, 28, 33, 40, 41]
+['해']
+```
+
