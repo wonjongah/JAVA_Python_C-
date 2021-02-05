@@ -244,3 +244,184 @@ with open("live.txt", "rt") as f:
 print(text)
 ```
 
+
+
+#### 14.2 파일 관리
+
+
+
+- 파일 관리 함수
+
+
+
+파일 입출력 함수는 파일에 저장된 내용을 다루는 데 비해 파일 관리 함수는 파일 자체를 다룬다.
+
+os 모듈과, shutil 모듈에 정의되어 있다.
+
+| 함수                  | 설명                                                 |
+| --------------------- | ---------------------------------------------------- |
+| shutil.copy(a, b)     | 파일을 복사한다.                                     |
+| shutil.copytree(a, b) | 디렉토리를 복사한다. 서브디렉토리까지 전부 복사한다. |
+| shutil.move(a, b)     | 파일을 이동한다.                                     |
+| shutil.rmtree(path)   | 디렉토리를 삭제한다.                                 |
+| os.rename(a, b)       | 파일 이름을 변경한다.                                |
+| os.remove(f)          | 파일을 삭제한다.                                     |
+| os.chmod(f, m)        | 파일의 퍼미션을 변경한다.                            |
+| shutil.chown(f, u, g) | 파일의 소유권을 변경한다.                            |
+| os.link(a, b)         | 하드 링크를 생성한다.                                |
+| os.symlink(a, b)      | 심볼릭 링크를 생성한다.                              |
+
+ex)
+
+```python
+import shutil
+
+shutil.copy("live.txt", "live2.txt") # live.txt 내용을 복사해 live2.txt 파일 생성
+```
+
+
+
+- 디렉토리 관리 함수
+
+
+
+| 함수          | 설명                                    |
+| ------------- | --------------------------------------- |
+| os.chdir(d)   | 현재 디렉토리를 변경한다.               |
+| os.mkdir(d)   | 디렉토리를 생성한다.                    |
+| os.rmdir(d)   | 디렉토리를 제거한다.                    |
+| os.getcwd()   | 현재 디렉토리를 조사한다.               |
+| os.listdir(d) | 디렉토리안의 목록을 나열한다.           |
+| glob.glob(p)  | 패턴과 일치하는 파일의 목록을 나열한다. |
+
+디렉토리 경로가 여러 개의 요소로 구성된 포맷은 정확하게 다루기 어렵다. os.path 모듈에는 디렉토리의 경로를 조사하고 조작하는 여러가지 함수가 제공된다.
+
+| 함수                | 설명                                                       |
+| ------------------- | ---------------------------------------------------------- |
+| os.path.isabs(f)    | 절대 경로인지 조사한다.                                    |
+| os.path.abspath(f)  | 파일의 절대 경로를 구한다.                                 |
+| os.path.realpath(f) | 원본 파일의 경로를 구한다.                                 |
+| os.path.exists(f)   | 파일의 존재 여부를 조사한다.                               |
+| os.path.isfile(f)   | 파일인지 조사한다. 파일이면 참, 디렉토리이면 거짓 리턴     |
+| os.path.isdir(f)    | 디렉토리인지 조사한다. 디렉토리이면 참, 파일이면 거짓 리턴 |
+
+
+
+write 함수는 파일이 없으면 만들지만 디렉토리는 만들어지지 않는다.
+
+디렉토리가 있는 지 없는지 먼저 확인 후(os.path.exsits) -> 없으면 디렉토리를 만들어야 한다.(os.mkdir)
+
+
+
+```python
+import os
+
+files = os.listdir("c:\\workspace") // workspace 디렉토리에 있는 목록을 열거한다.
+for f in files:
+    print(f)
+```
+
+```
+.git
+algorithm
+android-ex
+arduino LED practice.code-workspace
+basic_of_AI
+bigdata
+DataStructure_codingTest
+iot
+iot_web_service
+java
+JAVA_Python_C++
+kotlin-ex
+mariadb
+mongodb
+openCV
+opencv-ex
+project
+pymongo-ex
+python
+README.md
+tf
+webclient
+인터페이스 실습코드
+```
+
+
+
+```python
+import os
+
+def dumpdir(path):
+    files = os.listdir(path)
+    for f in files:
+        fullpath = path + "\\" + f
+        if os.path.isdir(fullpath):
+            print("[" + fullpath + "]")
+            dumpdir(fullpath)
+        else:
+            print("\t" + fullpath)
+
+dumpdir("c:\\workspace\\bigdata")
+```
+
+```
+[c:\workspace\bigdata\.git]
+        c:\workspace\bigdata\.git\COMMIT_EDITMSG
+        c:\workspace\bigdata\.git\config
+        c:\workspace\bigdata\.git\description
+        c:\workspace\bigdata\.git\HEAD
+[c:\workspace\bigdata\.git\hooks]
+        c:\workspace\bigdata\.git\hooks\applypatch-msg.sample
+        c:\workspace\bigdata\.git\hooks\commit-msg.sample
+        c:\workspace\bigdata\.git\hooks\fsmonitor-watchman.sample
+        c:\workspace\bigdata\.git\hooks\post-update.sample
+        c:\workspace\bigdata\.git\hooks\pre-applypatch.sample
+        c:\workspace\bigdata\.git\hooks\pre-commit.sample
+        c:\workspace\bigdata\.git\hooks\pre-push.sample
+        c:\workspace\bigdata\.git\hooks\pre-rebase.sample
+        c:\workspace\bigdata\.git\hooks\pre-receive.sample
+        c:\workspace\bigdata\.git\hooks\prepare-commit-msg.sample
+        c:\workspace\bigdata\.git\hooks\update.sample
+        c:\workspace\bigdata\.git\index
+[c:\workspace\bigdata\.git\info]
+        c:\workspace\bigdata\.git\info\exclude
+[c:\workspace\bigdata\.git\logs]
+        c:\workspace\bigdata\.git\logs\HEAD
+[c:\workspace\bigdata\.git\logs\refs]
+[c:\workspace\bigdata\.git\logs\refs\heads]
+        c:\workspace\bigdata\.git\logs\refs\heads\main
+[c:\workspace\bigdata\.git\logs\refs\remotes]
+[c:\workspace\bigdata\.git\logs\refs\remotes\origin]
+        c:\workspace\bigdata\.git\logs\refs\remotes\origin\main
+[c:\workspace\bigdata\.git\objects]
+[c:\workspace\bigdata\.git\objects\12]
+        c:\workspace\bigdata\.git\objects\12\2c5f2799058bf023405437c934ae4f0177ed25
+[c:\workspace\bigdata\.git\objects\29]
+        c:\workspace\bigdata\.git\objects\29\2f147d79254e162c3e75180837079db61ac577
+[c:\workspace\bigdata\.git\objects\49]
+        c:\workspace\bigdata\.git\objects\49\ec3eb16f69c154cd0778a023d06807215897ed
+[c:\workspace\bigdata\.git\objects\71]
+        c:\workspace\bigdata\.git\objects\71\fd50f50d7a2c4054d128c7e0fd1ac889174b50
+[c:\workspace\bigdata\.git\objects\86]
+        c:\workspace\bigdata\.git\objects\86\ebd9f71defc907963aa484b1fdde7c4d66b380
+[c:\workspace\bigdata\.git\objects\c3]
+        c:\workspace\bigdata\.git\objects\c3\ecd6c8d4ebf884c3fe0c1f61fecdfabd31eb17
+[c:\workspace\bigdata\.git\objects\info]
+[c:\workspace\bigdata\.git\objects\pack]
+[c:\workspace\bigdata\.git\refs]
+[c:\workspace\bigdata\.git\refs\heads]
+        c:\workspace\bigdata\.git\refs\heads\main
+[c:\workspace\bigdata\.git\refs\remotes]
+[c:\workspace\bigdata\.git\refs\remotes\origin]
+        c:\workspace\bigdata\.git\refs\remotes\origin\main
+[c:\workspace\bigdata\.git\refs\tags]
+        c:\workspace\bigdata\README.md
+[c:\workspace\bigdata\데이터 크롤링]
+[c:\workspace\bigdata\데이터 크롤링\chapter01. 크롤링의 종류]
+        c:\workspace\bigdata\데이터 크롤링\chapter01. 크롤링의 종류\chapter01.md
+```
+
+dumpdir 함수는 인수로 받은 경로에 대해 listdir 함수로 파일 목록을 얻어 출력한다.
+
+isdir 함수로 디렉토리인지 조사, 서브디렉토리인 경우 재귀호출해 디렉토리 내부를 다시 살핀다.
