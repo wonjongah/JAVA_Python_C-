@@ -284,3 +284,185 @@ malloc 함수는 정해진 크기 만큼 메모리를 항당하는 함수이다.
 
 
 
+malloc 함수를 이용해 메모리를 할당한 후에는 free를 이용해 메모리를 해제해줘야 한다.
+
+그렇지 않은 경우 메모리에 쓰레기 값으로 남게 되어 메모리 용량의 낭비가 발생하게 된다.
+
+이러한 현상을 <u>메모리 누수</u>라고 말한다.
+
+valgrind 프로그램을 사용하면 코드에서 메모리 관련한 문제가 있는지 쉽게 확인 가능하다.
+
+
+
+#### 7. 메모리 교환, 스택, 힙
+
+
+
+```c
+#include <stdio.h>
+
+void swap(int a, int b);
+
+int main(void)
+{
+    int x = 1;
+    int y = 2;
+
+    printf("x is %i, y is %i\n", x, y);
+    swap(x, y);
+    printf("x is %i, y is %i\n", x, y);
+}
+
+void swap(int a, int b)
+{
+    int tmp = a;
+    a = b;
+    b = tmp;
+}
+```
+
+a와 b는 각각 x, y의 값을 복제해 가지게 된다. 즉 서로 다른 메모리 주소에 저장되는 것이다. 
+
+heap에는 malloc으로 할당된 메모리의 데이터가 저장된다.
+
+stack에는 프로그램 내의 함수와 관련된 것들이 저장된다.
+
+a, b, x, y, tmp 모두 **스택 영역**에 저장되지만 a와 x, b와 y는 그 안에서도 서로 다른 위치에 저장된 변수이다.
+
+따라서 a, b와 x, y를 바꾸는 것에 아무런 영향을 끼치지 못한다.
+
+a, b를 각각 x와 y를 가리키는 포인터로 지정함으로써 이 문제를 해결할 수 있다.
+
+```c
+#include <stdio.h>
+
+void swap(int *a, int *b);
+
+int main(void)
+{
+    int x = 1;
+    int y = 2;
+
+    printf("x is %i, y is %i\n", x, y);
+    swap(&x, &y);
+    printf("x is %i, y is %i\n", x, y);
+}
+
+void swap(int *a, int *b)
+{
+    int tmp = *a;
+    *a = *b;
+    *b = tmp;
+}
+```
+
+
+
+#### 8. 파일 쓰기
+
+
+
+머신 코드 영역에는 프로그램이 컴파일된 바이너리가 저장된다.
+
+글로벌 영역에는 프로그램 안에서 저장된 전역 변수가 저장된다.
+
+힙 영역에는 malloc으로 할당된 메모리의 데이터가 저장, 스택에는 프로그램 내의 함수와 관련된 것들이 저장된다.
+
+힙 영역에는 malloc에 의해 메모리가 더 할당될수록, 사용하는 메모리의 범위가 아래로 늘어난다.
+
+스택도 함수가 더 많이 호출될 수록, 사용하는 메모리의 범위가 점점 위로 늘어난다.
+
+제한된 메모리 용량 하에 기존의 값을 침범하는 경우가 있는데 이를 힘 오버플로우, 스택 오버플로우라 칭한다.
+
+
+
+- 사용자에게 입력받기
+
+
+
+```c
+#include <stdio.h>
+
+int main(void)
+{
+    int x;
+    printf("x: ");
+    scanf("%i", &x);
+    printf("x: %i\n", x);
+}
+```
+
+scanf로 받을 때 &를 사용해 주소를 입력해준다.
+
+스택 영역 안에 s가 저장된 주소로 찾아가 사용자가 입력한 값을 저장하도록 하기 위함이다.
+
+
+
+- 파일 쓰기
+
+
+
+```c
+#include <cs50.h>
+#include <stdio.h>
+#include <string.h>
+
+int main(void)
+{
+    FILE *file = fopen("phonebook.csv", "a");
+    char *name = get_string("Name: ");
+    char *number = get_string("Number: ");
+    fprintf(file, "%s,%s\n", name, number);
+    fclose(file);
+}
+```
+
+fopen 함수를 이용해 파일을 FILE이라는 자료형으로 불러올 수 있다.
+
+fopen 함수의 첫 번째 인자는 파일의 이름, 두 번째 인자는 모드로 r은 읽기, w는 쓰기, a는 덧붙이기를 의마한다.
+
+입력받은 문자열을 fprintf 함수를 이용해 printf에서처럼 파일에서 직접 내용을 출력할 수 있다.
+
+작업이 끝난 후 fclose 함수로 파일에 대한 작업을 종료해준다.
+
+
+
+#### 9. 파일 읽기
+
+
+
+```c
+#include <stdio.h>
+
+int main(int argc, char *argv[])
+{
+    if (argc != 2)
+    {
+        return 1;
+    }
+
+    FILE *file = fopen(argv[1], "r");
+
+    if (file == NULL)
+    {
+        return 1;
+    }
+ 
+   unsigned char bytes[3];
+    fread(bytes, 3, 1, file);
+
+    if (bytes[0] == 0xff && bytes[1] == 0xd8 && bytes[2] == 0xff)
+    {
+        printf("Maybe\n");
+    }
+    else
+    {
+        printf("No\n");
+    }
+    fclose(file);
+}
+```
+
+(bytes[0] == 0xff && bytes[1] == 0xd8 && bytes[2] == 0xff)는 JPEG 형식의 파일을 정의할 때 만든 약속으로, JPEG 파일의 시작점에 꼭 포함되어 있어야 한다.
+
+따라서 JPEG 파일인지 검색하려면 이를 확인하면 된다.
