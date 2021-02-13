@@ -240,3 +240,135 @@ def intro(self):
 파이썬은 여러 개의 부모로부터 클래스를 파생시키는 다중 상속까지 지원한다.
 
 상속의 맨 꼭대기는 오브젝트라고 부른다.
+
+
+
+- 액세서
+
+
+
+파이썬은 공식적으로 정보 은폐를 지원하지 않는다.
+
+그래서 파이썬 클래스의 멤버는 모두 공개되어 있으며 외부에서 누구나 액세스할 수 있다. (기본 퍼블릭)
+
+하지만, 객체 초기화 후 외부에서 멤버를 실수나 우발적으로 엉뚱한 값을 대입하면 큰 문제가 된다.
+
+멤버를 외부에서 마음대로 조작하게 내버려두는 것보다 일정한 규칙을 마련하고 안전하게 액세스하도록 해야 한다.
+
+멤버 값을 대신 읽어주는 게터(Getter), 메서드와 변경하는 세터(Setter) 메서드를 정의하는 것이 보편적이다.
+
+```python
+class Date:
+    def __init__(self, month):
+        self.month = month
+
+    def getmonth(self):
+        return self.month
+
+    def setmonth(self, month):
+        if 1 <= month <= 12:
+            self.month = month
+
+today = Date(8)
+today.setmonth(15)
+print(today.getmonth())
+```
+
+1 ~ 12의 값에 해당하는 월의 값만 저장을 하기 때문에 객체를 엉뚱한 값으로 설정하지 않을 수 있다.
+
+<u>month 멤버는 숨겨놓고 게터, 세터만 쓰도록 한다면 객체의 안전을 어느 정도 지킬 수 있다.</u>
+
+그러나 사용자가 멤버의 이름을 알고 있으니 today.month = 123이라 대입하면 이때는 방어할 방법이 없다.
+
+<u>좀 더 안전한 방법은 멤버의 이름을 어렵게 만들고 게터, 세터를 정의한 후 property(getter, setter) 형식으로 프로퍼티를 정의하는 것이다.</u>
+
+```python
+class Date:
+    def __init__(self, month):
+        self.inner_month = month
+
+    def getmonth(self):
+        return self.inner_month
+
+    def setmonth(self, month):
+        if 1 <= month <= 12:
+            self.inner_month = month
+    
+    month = property(getmonth, setmonth)
+
+today = Date(8)
+today.month = 15 # today의 프로퍼티 함수 month에서 setter 이용
+print(today.month)
+```
+
+<u>getter, setter로 접근 가능한 함수가 property이다.</u>
+
+실제 정보를 저장하는 멤버는 inner_month로 정의하고 month 프로피터를 통해 내부 멤버를 액세스하는 게터, 세터와 연결한다.
+
+<u>month 프로퍼티를 읽고 쓰면 게터, 세터가 호출되어 안전하다.</u>
+
+프로퍼티를 통해 게터, 세터는 직접 호출할 수 있지만 today.month에 15를 대입하는 것은 허락되지 않는다.
+
+데코레이터로 프로퍼티를 정의할 수도 있다.
+
+<u>메서드의 이름은 month로 쓰고 데코레이터를 붇이되 게터는 @property를 붙이고 세터는 @이름.setter를 붙인다.</u>
+
+```python
+class Date:
+    def __init__(self, month):
+        self.inner_month = month
+    @property
+    def month(self): # 읽기 용도 month
+        return self.inner_month
+    @month.setter
+    def month(self, month): # 쓰기(설정) 용도 month
+        if 1 <= month <= 12:
+            self.inner_month =  month
+
+today = Date(8)
+today.month = 15 # write -> setter호출
+print(today.month) # 필드 함수 리드처럼 보이나 getter 함수
+```
+
+property 사용 시 같은 이름 함수 선언, 사용 가능하다.
+
+데코레이터로 정의하면 액세서는 노출되지 않아 외부에서 직접 호출할 수 없으며 속성에 잘못된 값을 대입하면 거부된다.
+
+세터를 정의하지 않으면 읽기 전용으로 만들 수 있다.
+
+그러나 프로퍼티를 쓰더라도 숨겨진 멤버 이름을 알고 있다면 today.inner_month = 15로 대입하는 것을 막을 수 없다.
+
+숨겨진 멤버의 이름이 \_\_로 시작하면 이 멤버를 바로 참조하지 못하도록 특수한 이름을 붙인다.
+
+(private(외부 노출하지 않겠다.))
+
+다음 코드는 __month로 이름을 바꿈으로써 함부로 값이 변경되지 않도록 한다.
+
+```python
+class Date:
+    def __init__(self, month):
+        self.__month = month # 외부 공개 X
+
+    def getmonth(self):
+        return self.__month
+    
+    def setmonth(self, month):
+        if 1 <= month <= 12:
+            self.__month = month
+    
+    month = property(getmonth, setmonth) # month라는 프리퍼티를 만들어준다.
+
+today = Date(8)
+today.__month = 15
+print(today.month)
+```
+
+__가 붙으면 내부적인 실제 이름을 _클래스명\_\_멤버명으로 복잡하게 만든다.(프리베이트 멤버변수)
+
+즉 __month는 _Date\_\_month가 된다.
+
+사용자가 이런 복잡한 이름을 알아내 실수로 대입할 위험을 막을 수 있다.
+
+물론 숨겨진 이름도 직접 대입하면 바꿀 수 있지만 최소한 의도치 않은 실수는 막을 수 있다.
+
+게터, 세터만 잘 사용해도 어느 정도의 안전성은 확보 가능하다.
