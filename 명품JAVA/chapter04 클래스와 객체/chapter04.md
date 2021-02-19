@@ -670,3 +670,110 @@ Circle[5] c; // error, 아직 배열이 생성되지 않았는데 배열의 크�
 2. 레퍼런스 배열 생성
 
 두 번째로 5개의 레퍼런스를 원소로 하는 배열을 생성한다. 배열의 원소를 객체가 아니라 레퍼런스이다.
+
+```java
+c = new Circle[5];
+```
+
+3. 객체 생성
+
+Circle 객체를 하나씩 생성해 배열 c[]의 각 레퍼런스에 대입한다.
+
+```java
+for(int i = 0; i < c.length; i++){ // c.length 배열 c의 크기로서 5
+	c[i] = new Circle[i]; // i 번째 Circle 객체 생성
+}
+```
+
+c라는 레퍼런스 변수가 c[] 배열을 가리키고, 각 c[i] 배열이 Circle 객체(ex) radius=0,...)을 각각 가리킨다.
+
+
+
+- 배열의 원소 객체 접근
+
+
+
+배열 c의 i번째 객체에 접근하기 위해서는 c[i] 레퍼런스를 사용하면 된다. 
+
+```java
+for(int i = 0; i < c.length; i++){
+	System.out.print((int)(c[i].getArea()) + " ");
+}
+```
+
+ex)
+
+```java
+class Circle{
+    int radius;
+    public Circle(int radius){
+        this.radius = radius;
+    }
+    public double getArea(){
+        return 3.14 * radius * radius;
+    }
+}
+
+public class CircleArray {
+    public static void main(String args[]){
+        Circle [] c; // Circle 배열에 대한 레퍼런스 c 선언
+        c = new Circle[5];
+
+        for(int i = 0; i < c.length; i++){
+            c[i] = new Circle(i); // i번째 원소 객체 생성
+        }
+
+        for(int i = 0; i < c.length; i++){
+            System.out.print((int)(c[i].getArea()) + " ");
+        }
+    }
+}
+```
+
+```
+0 3 12 28 50
+```
+
+
+
+```java
+import java.util.Scanner;
+
+class Book{
+    String title, author;
+    public Book(String title, String author){
+        this.title = title;
+        this.author = author;
+    }
+}
+
+public class BookArray {
+    public static void main(String[] args){
+        Book [] book = new Book[2]; // 레퍼런스 변수와 레퍼런스 배열만 생성
+        Scanner sc = new Scanner(System.in);
+
+        for(int i = 0; i < book.length; i++){
+            System.out.print("제목>>");
+            String title = sc.nextLine();
+            System.out.print("저자>>");
+            String author = sc.nextLine();
+            book[i] = new Book(title, author);
+            // i 번째 원소 객체 생성
+        }
+
+        for(int i = 0; i < book.length; i++){
+            System.out.print("(" + book[i].title + ", " + book[i].author + ")");
+        }
+        sc.close();
+    }
+}
+```
+
+```
+제목>>어린왕자
+저자>>생택쥐베리
+제목>>귀경꾸(귀여운경식꾸)
+저자>>종아리
+(어린왕자, 생택쥐베리)(귀경꾸(귀여운경식꾸), 종아리)
+```
+
