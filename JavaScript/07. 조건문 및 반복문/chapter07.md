@@ -141,6 +141,3 @@ for(var i = 0; i < 10; i++){
 | clearInterval(id)       | 실행되고 있는 interval을 중지     |
 
 밀리세컨드가 단위이며, clear 함수가 받는 인자는 set 함수가 반환하는 것이다.
-
-
-
