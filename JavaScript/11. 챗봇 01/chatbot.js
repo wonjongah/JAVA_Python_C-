@@ -15,8 +15,18 @@ function check_text(){
         target.style.marginTop = "0px";
         target.style.paddingTop = "0px";
         target.style.height = "300px";    }
-    else if(value == "야옹"){
-        alert("야옹");
+    else if(value == "불꺼줘"){
+        target.innerHTML = "불꺼주겠다냥";
+        target.style.color = "white";
+        document.body.style.backgroundColor = "#403A60";
+    }
+    else if(value == "불켜줘"){
+        target.innerHTML = "불켜주겠다냥";
+        target.style.color = "black";
+        document.body.style.backgroundColor = "white";
+    }
+    else if(value == "경고"){
+        alert("경고입니다!");
     }
     else{
         console.log(value);
