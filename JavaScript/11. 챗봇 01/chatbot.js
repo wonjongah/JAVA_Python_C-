@@ -9,8 +9,10 @@ function check_text(){
     target.style.paddingTop = "80px";
     target.style.height = "120px";
 
+    // 따라하라는 명령을 했을 때
     if(follow == 1){
         if(value == "그만해! 냥!"){
+            // 따라하기 그만 명령
             follow = 0;
             target.innerHTML = "냥냥 냐냐냥!";
         }
