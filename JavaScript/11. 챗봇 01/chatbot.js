@@ -1,4 +1,12 @@
 var follow = 0;
+var app = document.getElementById("typed");
+
+var typewriter = new Typewriter(app, {
+  loop: false,
+});
+
+typewriter.typeString("냥냥 시작! 냥!")
+.start();
 
 function check_text(){
     var value = document.getElementById("console").value;
@@ -9,10 +17,8 @@ function check_text(){
     target.style.paddingTop = "80px";
     target.style.height = "120px";
 
-    // 따라하라는 명령을 했을 때
     if(follow == 1){
         if(value == "그만해! 냥!"){
-            // 따라하기 그만 명령
             follow = 0;
             target.innerHTML = "냥냥 냐냐냥!";
         }
@@ -49,6 +55,16 @@ function check_text(){
         else if(value == "나 따라해봐"){
             follow = 1;
             target.innerHTML = "냥냥 냐냐냥!";
+            typewriter.deleteAll();
+            typewriter.typeString("따라한다 냥!");
+            typewriter.start();
+        }
+        else if(value == ""){
+            typewriter
+            .typeString("아무 말이라도 해달라 냥")
+            .pauseFor(1300)
+            .deleteAll()
+            .start();
         }
         else{
             target.innerHTML = value;
