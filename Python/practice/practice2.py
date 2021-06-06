@@ -14,6 +14,7 @@ print(li1)
 new_li1 = [x for x in li1 if x]
 new_li1 = [x for x in li1 if x]
 new_li1 = list(filter(None, li1))
+new_li1 = list(filter(None, li1))
 print(True if len(li1) > 3 else False)
 print(new_li1)
 
